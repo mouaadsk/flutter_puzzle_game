@@ -1,5 +1,7 @@
+import 'package:axie_scholarship/models/puzzleModel.dart';
 import 'package:axie_scholarship/models/screenSize.dart';
-import 'package:axie_scholarship/screens/puzzlePage.dart';
+import 'package:axie_scholarship/screens/puzzleCardsPage.dart';
+import 'package:axie_scholarship/screens/puzzlesChoice.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,15 +30,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  PuzzleModel _puzzleModel = PuzzleModel.fromUrl(
+      imageLink: "https://i.ibb.co/5T39vkz/insect.jpg",
+      imageName: "insect.jpg",
+      numberOfTiles: 9,
+      title: "insect");
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      Provider<ScreenSize>(
-        create: (_) => ScreenSize(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-        ),
-      )
-    ], child: PuzzlePage());
+    return MultiProvider(
+      providers: [
+        Provider<ScreenSize>(
+          create: (_) => ScreenSize(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+          ),
+        )
+      ],
+      child: PuzzlesChoicePage(),
+    );
   }
 }

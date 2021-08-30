@@ -1,14 +1,20 @@
-import 'package:axie_scholarship/models/puzzleImage.dart';
+import 'package:axie_scholarship/models/puzzleModel.dart';
 import 'package:axie_scholarship/models/puzzleTileModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PuzzleTile extends StatefulWidget {
+  final double tileMargin;
   final PuzzleTileModel puzzleTileModel;
   final double height;
-  const PuzzleTile(
-      {Key? key, required this.puzzleTileModel, required this.height})
-      : super(key: key);
+  final int linearTilesNumber;
+  const PuzzleTile({
+    Key? key,
+    required this.puzzleTileModel,
+    required this.height,
+    required this.tileMargin,
+    required this.linearTilesNumber,
+  }) : super(key: key);
 
   @override
   _PuzzleTileState createState() => _PuzzleTileState();
@@ -25,17 +31,33 @@ class _PuzzleTileState extends State<PuzzleTile>
 
   @override
   Widget build(BuildContext context) {
+    int index = widget.puzzleTileModel.currentIndex;
+    int marginUnitHorizontal = index % widget.linearTilesNumber,
+        marginUnitVertical = 0;
+    for (var i = widget.linearTilesNumber, margin = 0;
+        i <= widget.linearTilesNumber * widget.linearTilesNumber;
+        i = i + widget.linearTilesNumber, margin++) {
+      if (index < i) {
+        marginUnitVertical = margin;
+        break;
+      }
+    }
     return AnimatedPositioned(
       duration: Duration(milliseconds: 300),
-      left: (widget.puzzleTileModel.currentIndex % 3) * widget.height,
-      top: (widget.puzzleTileModel.currentIndex / 3).floor() * widget.height,
-      curve: Curves.elasticIn,
+      left: (widget.puzzleTileModel.currentIndex % widget.linearTilesNumber) *
+              widget.height +
+          (widget.tileMargin * marginUnitHorizontal),
+      top: (widget.puzzleTileModel.currentIndex / widget.linearTilesNumber)
+                  .floor() *
+              widget.height +
+          (widget.tileMargin * marginUnitVertical),
+      curve: Curves.decelerate,
       child: InkWell(
         child: GestureDetector(
           onTap: () {
             setState(() {
               context
-                  .read<PuzzleImage>()
+                  .read<PuzzleModel>()
                   .moveTileByIndex(puzzleTile: widget.puzzleTileModel);
             });
           },
