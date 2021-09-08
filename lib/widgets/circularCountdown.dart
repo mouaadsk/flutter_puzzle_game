@@ -1,3 +1,5 @@
+import 'package:axie_scholarship/enums/puzzleState.dart';
+import 'package:axie_scholarship/models/puzzleStateWrapper.dart';
 import 'package:axie_scholarship/models/screenSize.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,15 @@ class _CircularCountdownState extends State<CircularCountdown>
 
   @override
   Widget build(BuildContext context) {
+    context.watch<PuzzleState>();
+    if (context.read<PuzzleState>() == PuzzleState.ToBeRestarted) {
+      context.read<PuzzleStateWrapper>().play();
+      this._countdownController.reset();
+      this._countdownController.forward();
+    }
+    if (context.read<PuzzleState>() == PuzzleState.Pause) {
+      this._countdownController.stop();
+    }
     return AnimatedBuilder(
         animation: _countdownController,
         builder: (context, child) {

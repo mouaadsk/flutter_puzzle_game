@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:axie_scholarship/enums/puzzleState.dart';
 import 'package:axie_scholarship/models/puzzleModel.dart';
+import 'package:axie_scholarship/models/puzzleStateWrapper.dart';
 import 'package:axie_scholarship/models/screenSize.dart';
 import 'package:axie_scholarship/shared/colors.dart';
 import 'package:axie_scholarship/widgets/circularCountdown.dart';
@@ -19,9 +21,10 @@ class PuzzlePage extends StatefulWidget {
 }
 
 class _PuzzlePageState extends State<PuzzlePage> {
+  PuzzleStateWrapper puzzleStateWrapper = PuzzleStateWrapper();
+
   void rebuildingAfterFileIsLoaded() {
     Future.delayed(Duration(seconds: 2)).then((value) async {
-      print("called rebuildingAfterIsLoaded");
       if (widget.puzzleModel.completed)
         setState(() {});
       else
@@ -37,7 +40,67 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("the value of completed : ${widget.puzzleModel.completed}");
+    widget.puzzleModel.whenPlayerWins = () {
+      ScreenSize screenSize = context.read<ScreenSize>();
+      setState(() {
+        puzzleStateWrapper.pause();
+        this.widget.puzzleModel.shufflePuzzle();
+      });
+      showDialog(
+          context: context,
+          builder: (context) => MultiProvider(
+                providers: [
+                  Provider<ScreenSize>(
+                    create: (_) => screenSize,
+                  ),
+                ],
+                child: PuzzleCustomDialog(
+                  textBody:
+                      "You Succefully solved the puzzle, and earned 500 Score.\n Do you want to play again?",
+                  title: "Congratulations",
+                  actions: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: appMainGrey,
+                          fixedSize: Size(
+                            screenSize.width * .4,
+                            screenSize.width * .1,
+                          ),
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Mont",
+                            fontWeight: FontWeight.w700,
+                          )),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text("No"),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: Size(
+                            screenSize.width * .4,
+                            screenSize.width * .1,
+                          ),
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Mont",
+                            fontWeight: FontWeight.w700,
+                          )),
+                      onPressed: () {
+                        //TODO : Adding play again logic (Code)
+                        this.widget.puzzleModel.shufflePuzzle();
+                        puzzleStateWrapper.restartPuzzle();
+                        Navigator.pop(context);
+                        setState(() {});
+                      },
+                      child: Text("Yes"),
+                    ),
+                  ],
+                ),
+              ));
+    };
     return Scaffold(
       backgroundColor: bgBlack,
       body: SafeArea(
@@ -88,79 +151,103 @@ class _PuzzlePageState extends State<PuzzlePage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CircularCountdown(
-                                  countdownDuration:
-                                      widget.puzzleModel.puzzleDuration,
-                                  onFinished: () {
-                                    ScreenSize screenSize =
-                                        context.read<ScreenSize>();
-                                    print(screenSize.width);
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => MultiProvider(
-                                              providers: [
-                                                Provider<ScreenSize>(
-                                                  create: (_) => screenSize,
-                                                ),
-                                              ],
-                                              child: PuzzleCustomDialog(
-                                                textBody:
-                                                    "You didn't solve the puzzle.\n Do you want to play again ?",
-                                                title: "Game Over",
-                                                actions: [
-                                                  ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            primary:
-                                                                appMainGrey,
-                                                            fixedSize: Size(
-                                                              screenSize.width *
-                                                                  .4,
-                                                              screenSize.width *
-                                                                  .1,
-                                                            ),
-                                                            textStyle:
-                                                                TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  "Mont",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                            )),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text("No"),
-                                                  ),
-                                                  ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            fixedSize: Size(
-                                                              screenSize.width *
-                                                                  .4,
-                                                              screenSize.width *
-                                                                  .1,
-                                                            ),
-                                                            textStyle:
-                                                                TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  "Mont",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                            )),
-                                                    onPressed: () {},
-                                                    child: Text("Yes"),
+                                MultiProvider(
+                                  providers: [
+                                    StreamProvider<PuzzleState>(
+                                        create: (_) =>
+                                            puzzleStateWrapper.stream,
+                                        initialData: PuzzleState.Playing),
+                                    Provider<PuzzleStateWrapper>(
+                                        create: (_) => puzzleStateWrapper),
+                                  ],
+                                  child: CircularCountdown(
+                                    countdownDuration:
+                                        widget.puzzleModel.puzzleDuration,
+                                    onFinished: () {
+                                      //! the dialog of asking the player if he wants to play again or not after the countdown ends
+                                      ScreenSize screenSize =
+                                          context.read<ScreenSize>();
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => MultiProvider(
+                                                providers: [
+                                                  Provider<ScreenSize>(
+                                                    create: (_) => screenSize,
                                                   ),
                                                 ],
-                                              ),
-                                            ));
-                                  },
+                                                child: PuzzleCustomDialog(
+                                                  textBody:
+                                                      "You didn't solve the puzzle.\n Do you want to play again ?",
+                                                  title: "Game Over",
+                                                  actions: [
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary:
+                                                                  appMainGrey,
+                                                              fixedSize: Size(
+                                                                screenSize
+                                                                        .width *
+                                                                    .4,
+                                                                screenSize
+                                                                        .width *
+                                                                    .1,
+                                                              ),
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontFamily:
+                                                                    "Mont",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                              )),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("No"),
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              fixedSize: Size(
+                                                                screenSize
+                                                                        .width *
+                                                                    .4,
+                                                                screenSize
+                                                                        .width *
+                                                                    .1,
+                                                              ),
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontFamily:
+                                                                    "Mont",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                              )),
+                                                      onPressed: () {
+                                                        //TODO : Adding play again logic (Code)
+                                                        this
+                                                            .widget
+                                                            .puzzleModel
+                                                            .shufflePuzzle();
+                                                        puzzleStateWrapper
+                                                            .restartPuzzle();
+                                                        Navigator.pop(context);
+                                                        setState(() {});
+                                                      },
+                                                      child: Text("Yes"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ));
+                                    },
+                                  ),
                                 ),
                                 ClipRRect(
                                   borderRadius: BorderRadius.all(
@@ -193,6 +280,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                               width: context.read<ScreenSize>().width * .92,
                               height: context.read<ScreenSize>().width * .92,
                               child: Stack(
+                                //! the puzzle tiles
                                 children: List.generate(
                                     widget.puzzleModel.puzzleTiles.length,
                                     (index) {

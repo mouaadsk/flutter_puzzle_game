@@ -40,6 +40,7 @@ class _PuzzlesChoicePageState extends State<PuzzlesChoicePage> {
                                         ],
                                         child: PuzzlesCardsPage(
                                           title: "3 x 3 Puzzles",
+                                          numberOfTiles: 9,
                                         ),
                                       )));
                         },
@@ -63,6 +64,7 @@ class _PuzzlesChoicePageState extends State<PuzzlesChoicePage> {
                                       ],
                                       child: PuzzlesCardsPage(
                                         title: "4 x 4 Puzzles",
+                                        numberOfTiles: 16,
                                       ),
                                     )));
                       },
@@ -83,6 +85,7 @@ class _PuzzlesChoicePageState extends State<PuzzlesChoicePage> {
                                         ],
                                         child: PuzzlesCardsPage(
                                           title: "5 x 5 Puzzles",
+                                          numberOfTiles: 25,
                                         ),
                                       )));
                         },

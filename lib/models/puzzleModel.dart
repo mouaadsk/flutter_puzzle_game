@@ -17,6 +17,7 @@ class PuzzleModel {
   int? width, height;
   late int freeIndex;
   File? imageFile;
+  VoidCallback? whenPlayerWins;
   List<PuzzleTileModel> puzzleTiles = [];
   bool completed;
   int numberOfTiles;
@@ -45,7 +46,6 @@ class PuzzleModel {
       this.completed = false,
       this.numberOfTiles = 9,
       this.puzzleLevel = PuzzleLevel.Easy}) {
-    print("the number of tiles is $numberOfTiles");
     freeIndex = this.numberOfTiles - 1;
     getImageFileFromUrl(url: imageLink, imageName: imageName).then((imageFile) {
       this.imageFile = imageFile;
@@ -93,6 +93,7 @@ class PuzzleModel {
               currentIndex: i));
         }
       }
+      this.shufflePuzzle();
       return true;
     } catch (e) {
       return false;
@@ -143,11 +144,13 @@ class PuzzleModel {
   bool moveTileByIndex({required PuzzleTileModel puzzleTile}) {
     try {
       if (areContiguous(index1: freeIndex, index2: puzzleTile.currentIndex)) {
-        int tempIndex = freeIndex, puzzleTilePreIndex = puzzleTile.currentIndex;
+        int tempIndex = freeIndex;
         freeIndex = puzzleTile.currentIndex;
         puzzleTile.currentIndex = tempIndex;
-        print(
-            "The free index is $freeIndex, and index : $puzzleTilePreIndex moved to $tempIndex");
+        if (isSolved()) {
+          this.whenPlayerWins!();
+          return true;
+        }
         return true;
       }
       return false;
@@ -171,10 +174,10 @@ class PuzzleModel {
       if (puzzleTiles[i].currentIndex != puzzleTiles[i].correctIndex)
         return false;
     }
-    print("The puzzle is solved");
     return true;
   }
 
+  //! shuffling the the puzzle tiles and adding their new indxes
   bool shufflePuzzle() {
     try {
       puzzleTiles.shuffle();

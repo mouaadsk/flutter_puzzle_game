@@ -9,37 +9,45 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class PuzzlesCardsPage extends StatefulWidget {
+  final int numberOfTiles;
   final String title;
-  const PuzzlesCardsPage({Key? key, required this.title}) : super(key: key);
+  const PuzzlesCardsPage({
+    Key? key,
+    required this.title,
+    required this.numberOfTiles,
+  }) : super(key: key);
 
   @override
   _PuzzlesCardsPageState createState() => _PuzzlesCardsPageState();
 }
 
 class _PuzzlesCardsPageState extends State<PuzzlesCardsPage> {
-  List<PuzzleModel> puzzleModels = [
-    PuzzleModel.fromUrl(
-        imageLink: "https://i.ibb.co/5T39vkz/insect.jpg",
-        imageName: "insect.jpg",
-        numberOfTiles: 9,
-        puzzleLevel: PuzzleLevel.Easy,
-        title: "Insect"),
-    PuzzleModel.fromUrl(
-        imageLink:
-            "https://i.pinimg.com/originals/2f/8e/0f/2f8e0f6ecfda9606aa69419fec19e753.jpg",
-        title: "Lion",
-        puzzleLevel: PuzzleLevel.Normal),
-    PuzzleModel.fromUrl(
-        imageLink:
-            "https://www.rxwallpaper.site/wp-content/uploads/cool-wolf-desktop-backgrounds-wallpaper-800x800.jpg",
-        title: "Wolf",
-        puzzleLevel: PuzzleLevel.Hard,
-        puzzleDuration: Duration(seconds: 10))
-  ];
+  List<PuzzleModel> puzzleModels = [];
 
   @override
   void initState() {
     super.initState();
+    puzzleModels = [
+      PuzzleModel.fromUrl(
+          imageLink: "https://i.ibb.co/5T39vkz/insect.jpg",
+          imageName: "insect.jpg",
+          numberOfTiles: widget.numberOfTiles,
+          puzzleLevel: PuzzleLevel.Easy,
+          title: "Insect"),
+      PuzzleModel.fromUrl(
+          imageLink:
+              "https://i.pinimg.com/originals/2f/8e/0f/2f8e0f6ecfda9606aa69419fec19e753.jpg",
+          title: "Lion",
+          numberOfTiles: widget.numberOfTiles,
+          puzzleLevel: PuzzleLevel.Normal),
+      PuzzleModel.fromUrl(
+          imageLink:
+              "https://www.rxwallpaper.site/wp-content/uploads/cool-wolf-desktop-backgrounds-wallpaper-800x800.jpg",
+          title: "Wolf",
+          puzzleLevel: PuzzleLevel.Hard,
+          numberOfTiles: widget.numberOfTiles,
+          puzzleDuration: Duration(seconds: 10))
+    ];
   }
 
   @override
