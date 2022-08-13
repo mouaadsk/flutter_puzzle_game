@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:axie_scholarship/enums/puzzleLevel.dart';
-import 'package:axie_scholarship/models/puzzleTileModel.dart';
+import 'package:flutter_puzzle_game/enums/puzzleLevel.dart';
+import 'package:flutter_puzzle_game/models/puzzleTileModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as Img;

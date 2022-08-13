@@ -1,6 +1,6 @@
-import 'package:axie_scholarship/enums/puzzleState.dart';
-import 'package:axie_scholarship/models/puzzleStateWrapper.dart';
-import 'package:axie_scholarship/models/screenSize.dart';
+import 'package:flutter_puzzle_game/enums/puzzleState.dart';
+import 'package:flutter_puzzle_game/models/puzzleStateWrapper.dart';
+import 'package:flutter_puzzle_game/models/screenSize.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

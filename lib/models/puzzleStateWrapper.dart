@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:axie_scholarship/enums/puzzleState.dart';
+import 'package:flutter_puzzle_game/enums/puzzleState.dart';
 
 class PuzzleStateWrapper {
   StreamController<PuzzleState> _streamController =

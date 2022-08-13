@@ -1,7 +1,7 @@
-import 'package:axie_scholarship/enums/puzzleLevel.dart';
-import 'package:axie_scholarship/models/puzzleModel.dart';
-import 'package:axie_scholarship/models/screenSize.dart';
-import 'package:axie_scholarship/shared/colors.dart';
+import 'package:flutter_puzzle_game/enums/puzzleLevel.dart';
+import 'package:flutter_puzzle_game/models/puzzleModel.dart';
+import 'package:flutter_puzzle_game/models/screenSize.dart';
+import 'package:flutter_puzzle_game/shared/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';

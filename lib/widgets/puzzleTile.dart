@@ -1,5 +1,5 @@
-import 'package:axie_scholarship/models/puzzleModel.dart';
-import 'package:axie_scholarship/models/puzzleTileModel.dart';
+import 'package:flutter_puzzle_game/models/puzzleModel.dart';
+import 'package:flutter_puzzle_game/models/puzzleTileModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

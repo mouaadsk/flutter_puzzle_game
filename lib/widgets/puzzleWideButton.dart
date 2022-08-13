@@ -1,6 +1,6 @@
-import 'package:axie_scholarship/models/screenSize.dart';
-import 'package:axie_scholarship/shared/colors.dart';
-import 'package:axie_scholarship/shared/trapZoidClipper.dart';
+import 'package:flutter_puzzle_game/models/screenSize.dart';
+import 'package:flutter_puzzle_game/shared/colors.dart';
+import 'package:flutter_puzzle_game/shared/trapZoidClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
