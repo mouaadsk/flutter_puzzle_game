@@ -1,6 +1,5 @@
 import 'package:flutter_puzzle_game/models/puzzleModel.dart';
 import 'package:flutter_puzzle_game/models/screenSize.dart';
-import 'package:flutter_puzzle_game/screens/puzzleCardsPage.dart';
 import 'package:flutter_puzzle_game/screens/puzzlesChoice.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

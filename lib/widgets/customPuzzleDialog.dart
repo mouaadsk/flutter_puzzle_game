@@ -1,5 +1,4 @@
 import 'package:flutter_puzzle_game/models/screenSize.dart';
-import 'package:flutter_puzzle_game/shared/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

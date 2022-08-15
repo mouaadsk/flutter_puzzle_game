@@ -1,13 +1,13 @@
 import 'dart:math';
 
-import 'package:axie_scholarship/enums/puzzleState.dart';
-import 'package:axie_scholarship/models/puzzleModel.dart';
-import 'package:axie_scholarship/models/puzzleStateWrapper.dart';
-import 'package:axie_scholarship/models/screenSize.dart';
-import 'package:axie_scholarship/shared/colors.dart';
-import 'package:axie_scholarship/widgets/circularCountdown.dart';
-import 'package:axie_scholarship/widgets/customPuzzleDialog.dart';
-import 'package:axie_scholarship/widgets/puzzleTile.dart';
+import 'package:flutter_puzzle_game/enums/puzzleState.dart';
+import 'package:flutter_puzzle_game/models/puzzleModel.dart';
+import 'package:flutter_puzzle_game/models/puzzleStateWrapper.dart';
+import 'package:flutter_puzzle_game/models/screenSize.dart';
+import 'package:flutter_puzzle_game/shared/colors.dart';
+import 'package:flutter_puzzle_game/widgets/circularCountdown.dart';
+import 'package:flutter_puzzle_game/widgets/customPuzzleDialog.dart';
+import 'package:flutter_puzzle_game/widgets/puzzleTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
